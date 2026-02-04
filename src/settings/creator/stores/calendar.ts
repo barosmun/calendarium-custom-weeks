@@ -299,8 +299,11 @@ function createCreatorStore(plugin: Calendarium, existing: Calendar) {
             subscribe: namedWeekStore.subscribe,
             add: (name?: string) =>
                 update((data) => {
+                    if (!data.static.weeks) {
+                        data.static.weeks = [];
+                    }
                     data.static.weeks.push({
-                        type: "namedWeek",
+                        type: "week",
                         name: name ?? "",
                         id: nanoid(6),
                     });
@@ -308,6 +311,9 @@ function createCreatorStore(plugin: Calendarium, existing: Calendar) {
                 }),
             update: (id: string, week: NamedWeek) =>
                 update((data) => {
+                    if (!data.static.weeks) {
+                        data.static.weeks = [];
+                    }
                     data.static.weeks.splice(
                         data.static.weeks.findIndex((m) => m.id == id),
                         1,
@@ -317,6 +323,9 @@ function createCreatorStore(plugin: Calendarium, existing: Calendar) {
                 }),
             delete: (id: string) =>
                 update((data) => {
+                    if (!data.static.weeks) {
+                        data.static.weeks = [];
+                    }
                     data.static.weeks = data.static.weeks.filter(
                         (m) => m.id != id
                     );

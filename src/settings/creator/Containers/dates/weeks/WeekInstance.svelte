@@ -15,7 +15,7 @@
     <div slot="name">{item.name}</div>
     <div slot="desc" class="desc">
         <div use:setNodeIcon={icon} aria-label={label} />
-        <span> THIS IS A NAMED WEEK </span>
+        <span> {item.abbreviation} </span>
     </div>
 </SettingItem>
 

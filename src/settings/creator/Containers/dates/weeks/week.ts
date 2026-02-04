@@ -27,5 +27,10 @@ export class WeekModal extends CanceableCalendariumModal<NamedWeek> {
                 (v) => (this.item.name = v)
             );
         });
+        new Setting(this.contentEl).setName("Abbreviation").addText((t) => {
+            t.setValue(this.item.abbreviation ?? "").onChange(
+                (v) => (this.item.abbreviation = v)
+            );
+        });
     }
 }

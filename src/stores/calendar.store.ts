@@ -581,6 +581,7 @@ function createStaticStore(store: Writable<Calendar>) {
     const leapDays = derived(staticData, (data) => data.leapDays);
     const months = derived(staticData, (data) => data.months);
     const moons = derived(staticData, (data) => data.moons);
+    const weeks = derived(staticData, (data) => data.weeks ?? []);
     const weekdays = derived(staticData, (data) => data.weekdays);
     const years = derived(staticData, (data) => data.years ?? []);
     const eras = derived(staticData, (data) =>
@@ -604,6 +605,7 @@ function createStaticStore(store: Writable<Calendar>) {
             overflow: data.overflow,
             offset: data.offset,
             incrementDay: data.incrementDay,
+            useCustomWeeks: data.useCustomWeeks,
             useCustomYears: data.useCustomYears,
             dayDisplayCallback: data.dayDisplayCallback,
         };
@@ -617,6 +619,7 @@ function createStaticStore(store: Writable<Calendar>) {
         moons,
         staticConfiguration,
         weekdays,
+        weeks,
         years,
         eras,
         seasonal,

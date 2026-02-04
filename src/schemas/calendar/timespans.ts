@@ -45,7 +45,7 @@ export type Week = Day[];
 export type NamedWeek = TimeSpan & {
     type: typeof TimeSpanType.Week;
     subtitle?: string;
-    short?: string;
+    abbreviation?: string;
 };
 
 export type LeapDayCondition = {

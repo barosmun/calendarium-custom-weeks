@@ -8,6 +8,8 @@
     export let month: number;
     export let dayArray: (DayOrLeapDay | null)[];
     export let weekNumber: number;
+    export let weekName: string | null;
+    export let weekAbbreviation: string | null;
 
     const global = getTypedContext("store");
     const ephemeral = getTypedContext("ephemeralStore");
@@ -47,7 +49,13 @@
 
 <div class="week calendarium">
     {#if $displayWeeks}
-        <span class="week-number">{weekNumber}</span>
+        {#if weekAbbreviation}
+            <span class="week-number">{weekAbbreviation}</span>
+        {:else if weekName}
+            <span class="week-number">{weekName}</span>
+        {:else}
+            <span class="week-number">{weekNumber}</span>
+        {/if}
     {/if}
     {#each dayArray as day}
         {#if day}
