@@ -13,6 +13,7 @@ export const TimeSpanType = {
     Era: "era",
     Day: "day",
     LeapDay: "leapday",
+    Week: "week",
     Month: "month",
     IntercalaryMonth: "intercalary",
     Year: "year",
@@ -39,7 +40,13 @@ export type Day = BaseDay & {
 };
 
 export type DefinedDay = Day & DefinedBaseDay;
+
 export type Week = Day[];
+export type NamedWeek = TimeSpan & {
+    type: typeof TimeSpanType.Week;
+    subtitle?: string;
+    short?: string;
+};
 
 export type LeapDayCondition = {
     ignore?: boolean;
@@ -60,6 +67,7 @@ export type LeapDay = BaseDay & {
 export type DefinedLeapDay = LeapDay & DefinedBaseDay;
 
 export type DayOrLeapDay = DefinedLeapDay | DefinedDay;
+
 /**
  * Months
  */

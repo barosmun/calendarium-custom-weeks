@@ -2,7 +2,7 @@ import type { CalEventDate, CalEvent, CalEventCategory } from "../events";
 import type { LocationData } from "./locations";
 import type { Moon } from "./moons";
 import type { Season, SeasonalData } from "./seasonal";
-import type { Week, Month, LeapDay, Era, Year } from "./timespans";
+import type { Week, Month, LeapDay, Era, Year, NamedWeek } from "./timespans";
 
 /**
  * This is a fully defined date.
@@ -12,12 +12,14 @@ import type { Week, Month, LeapDay, Era, Year } from "./timespans";
 export type CalDate = {
     year: number;
     month: number;
+    week?: number;
     day: number;
 };
 
 export type UndatedCalDate = {
     year: null;
     month: null;
+    week?: null;
     day: null;
 };
 /**
@@ -27,6 +29,8 @@ export type StaticCalendarData = {
     firstWeekDay: number;
     overflow: boolean;
     weekdays: Week;
+    useCustomWeeks?: boolean;
+    weeks?: NamedWeek[];
     months: Month[];
     leapDays: LeapDay[];
     moons: Moon[];

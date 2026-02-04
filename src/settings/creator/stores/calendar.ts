@@ -25,6 +25,7 @@ import type {
     LeapDay,
     Day,
     Era,
+    NamedWeek,
 } from "src/schemas/calendar/timespans";
 import {
     SeasonKind,
@@ -119,6 +120,8 @@ function createCreatorStore(plugin: Calendarium, existing: Calendar) {
     //TODO: Organize this better.
     const monthStore = derived(staticStore, (data) => data.months);
     const weekStore = derived(staticStore, (data) => data.weekdays);
+    const namedWeekStore = derived(staticStore, (data) => data.weeks);
+    const customWeeks = derived(staticStore, (data) => data.useCustomWeeks);
     const yearStore = derived(staticStore, (data) => data.years);
     const customYears = derived(staticStore, (data) => data.useCustomYears);
     const moonStore = derived(staticStore, (data) => data.moons);
@@ -288,6 +291,40 @@ function createCreatorStore(plugin: Calendarium, existing: Calendar) {
             set: (weekdays: Week) =>
                 update((data) => {
                     data.static.weekdays = [...weekdays];
+                    return data;
+                }),
+        },
+        namedWeekStore: {
+            customWeeks,
+            subscribe: namedWeekStore.subscribe,
+            add: (name?: string) =>
+                update((data) => {
+                    data.static.weeks.push({
+                        type: "namedWeek",
+                        name: name ?? "",
+                        id: nanoid(6),
+                    });
+                    return data;
+                }),
+            update: (id: string, week: NamedWeek) =>
+                update((data) => {
+                    data.static.weeks.splice(
+                        data.static.weeks.findIndex((m) => m.id == id),
+                        1,
+                        week
+                    );
+                    return data;
+                }),
+            delete: (id: string) =>
+                update((data) => {
+                    data.static.weeks = data.static.weeks.filter(
+                        (m) => m.id != id
+                    );
+                    return data;
+                }),
+            set: (weeks: NamedWeek[]) =>
+                update((data) => {
+                    data.static.weeks = [...weeks];
                     return data;
                 }),
         },
