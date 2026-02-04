@@ -1,5 +1,6 @@
 <script lang="ts">
     import WeekdayContainer from "./weekday/WeekdayContainer.svelte";
+    import WeekContainer from "./weeks/WeekContainer.svelte";
     import MonthContainer from "./months/MonthContainer.svelte";
     import CurrentDate from "./current/CurrentDate.svelte";
     import LeapDayContainer from "./leapdays/LeapDayContainer.svelte";
@@ -9,6 +10,7 @@
 
 <CurrentDate />
 <WeekdayContainer />
+<WeekContainer />
 <MonthContainer />
 <LeapDayContainer />
 <YearContainer />
