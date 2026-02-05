@@ -297,21 +297,16 @@ function format(
         }
     }
 
-    format = format
+    return format
         .replace("🂡", `${year}`)
         .replace("🂢", toMonthString(date.month, calendar)) // MMMM
         .replace("🂣", toShortMonthString(date.month, calendar)) // MMM
         .replace("🂤", toPaddedString(date.month + 1, calendar, "month")) // to human index (intercalary?)
-        .replace("🂥", `${date.month + 1}`); // M
-
-    if(date.week || date.week == 0){
-        format = format
-        .replace("🂨", toWeekString(date.week, calendar)) // WWWW
-        .replace("🂩", toShortWeekString(date.week, calendar)) // WWW
-        .replace("🂪", toShortWeekString(date.week, calendar)) // WW
-        .replace("🂫", `${date.week + 1}`) // W
-    }
-    return format
+        .replace("🂥", `${date.month + 1}`) // M
+        .replace("🂨", toWeekString(date.week!, calendar)) // WWWW
+        .replace("🂩", toShortWeekString(date.week!, calendar)) // WWW
+        .replace("🂪", toShortWeekString(date.week!, calendar)) // WW
+        .replace("🂫", `${date.week! + 1}`) // W
         .replace("🂦", toPaddedString(date.day, calendar, "day"))
         .replace("🂧", `${date.day}`)
         .trim();
@@ -371,14 +366,21 @@ export function toPaddedString(
 
 export function isValidDay(date: CalDate, calendar: Calendar) {
     if (date === null) return false;
-    const { day, month, year } = date;
+    const { day, week, month, year } = date;
     if (day == null) return false;
     if (month == null) return false;
     if (day < 1) return false;
     if (
-        day < 1 ||
         day > calendar?.static?.months[month]?.length ||
         !calendar?.static?.months[month]?.length
+    )
+        return false;
+    if (
+        week != undefined && 
+        (
+            day > calendar?.static?.weekdays?.length ||
+            day + (week * calendar?.static?.weekdays?.length) > calendar?.static?.months[month]?.length
+        )
     )
         return false;
     return true;

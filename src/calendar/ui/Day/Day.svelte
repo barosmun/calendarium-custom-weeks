@@ -17,8 +17,10 @@
     import Weather from "../Weather/Weather.svelte";
     import { readable } from "svelte/store";
     import MoonContainer from "../Moons/MoonContainer.svelte";
+    import { WeekStore } from "src/stores/week.store";
 
     export let month: MonthStore;
+    export let week: WeekStore | undefined = undefined;
     export let day: DayOrLeapDay;
 
     export let adjacent: boolean;
@@ -31,6 +33,7 @@
     $: calendar = $store;
     $: config = calendar.staticStore.staticConfiguration;
     $: index = month.index;
+    $: windex = week?.index; //lol
     $: year = month.year;
     $: current = $store.current;
     $: viewing = $ephemeral.viewing;
@@ -74,11 +77,13 @@
         !adjacent &&
         $current.day == day.number &&
         $current.month == $index &&
+        $current.week == $windex &&
         $current.year == year.year;
     $: opened =
         !adjacent &&
         $viewing &&
         $viewing.day == day.number &&
+        $viewing.week == $windex &&
         $viewing.month == $index &&
         $viewing.year == year.year;
 

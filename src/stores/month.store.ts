@@ -8,8 +8,10 @@ import type {
     DefinedLeapDay,
     Era,
 } from "src/schemas/calendar/timespans";
+import { WeekStore } from "./week.store";
 
 export class MonthStore {
+    weekCache = new Map<number, WeekStore>();
     constructor(
         public month: Month,
         public year: YearStore,
@@ -113,6 +115,15 @@ export class MonthStore {
             );
         }
     );
+
+    customWeeks = derived([this.staticStore.weeks], ([weeks]) => {
+        return weeks;
+    });
+
+    useCustomWeeks = derived([this.staticStore.staticConfiguration], (useCustomWeeks) => {
+        return useCustomWeeks;
+    });
+
     /**
      * This should return every day of the month, sorted into its appropriate week.
      * Each array represents 1 week.
@@ -120,6 +131,7 @@ export class MonthStore {
      *
      * To "skip" days in the UI, null should be used.
      */
+
     daysAsWeeks: Readable<Array<(DayOrLeapDay | null)[]>> = derived(
         [
             this.weekdays,
@@ -258,4 +270,14 @@ export class MonthStore {
             return Math.floor((daysBefore + firstDay) / week.length);
         }
     );
+
+    getWeekFromCache(week: number) {
+        const weekStore =
+            this.weekCache.get(week) ??
+            new WeekStore(get(this.customWeeks)[week], this, this.staticStore);
+        if (!this.weekCache.has(week)) {
+            this.weekCache.set(week, weekStore);
+        }
+        return weekStore;
+    }
 }

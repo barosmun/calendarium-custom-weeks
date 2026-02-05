@@ -19,7 +19,7 @@
 </script>
 
 <div class="weekday-container calendarium">
-    {#if $displayWeeks}
+    {#if $displayWeeks || $store.static.useCustomWeeks}
         <div class="weekday week-number calendarium">
             <span>W</span>
         </div>

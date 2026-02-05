@@ -19,6 +19,7 @@
         .getYearFromCache(year)
         .getMonthFromCache(month);
     $: ({ weekdays, weeks } = displayedMonth);
+    $: useCustomWeeks = displayedMonth.useCustomWeeks;
     $: weekArray = displayedMonth.daysAsWeeks;
     $: firstWeekNumber = displayedMonth.firstWeekNumber;
 </script>
@@ -30,7 +31,7 @@
     class="calendarium month-container"
     class:full={$full}
     style="--calendar-columns: {$weekdays.length +
-        ($displayWeeks ? 1 : 0)};--calendar-row-size: {$full
+        ($displayWeeks || useCustomWeeks ? 1 : 0)};--calendar-row-size: {$full
         ? `${(1 / $weeks) * 100}%`
         : '1fr'}; --calendar-row-count: {$weeks}"
 >

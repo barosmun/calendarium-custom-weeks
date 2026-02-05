@@ -183,14 +183,14 @@
     <div class="calendarium-nav nav">
         <div class="title-container">
             <h3 class="calendarium-title title">
+                {#if $viewState == ViewState.Week && $displayingWeek}
+                    <span class="calendarium-month month"
+                        >{$displayingWeek.name} -</span
+                    >
+                {/if}
                 {#if $viewState != ViewState.Year}
                     <span class="calendarium-month month"
                         >{$displayingMonth.name}</span
-                    >
-                {/if}
-                {#if $viewState == ViewState.Week && $displayingWeek}
-                    <span class="calendarium-month month"
-                        >{$displayingWeek.name}</span
                     >
                 {/if}
                 <span class="calendarium-year year">{$displayedYear}</span>

@@ -6,20 +6,27 @@
 
     export let year: number;
     export let month: number;
-    export let dayArray: (DayOrLeapDay | null)[];
-    // export let week: NamedWeek | null | undefined;
     export let weekNumber: number;
+    export let dayArray: (DayOrLeapDay | null)[];
 
     const global = getTypedContext("store");
     const ephemeral = getTypedContext("ephemeralStore");
 
     $: store = $global;
+    $: useCustomWeeks = $store.static.useCustomWeeks;
+    $: customWeekNumber = (weekNumber-1) % ($store.static.weeks?.length ?? 0);
     $: yearCalculator = store.yearCalculator;
     $: displayWeeks = $ephemeral.displayWeeks;
     $: displayedMonth = yearCalculator
         .getYearFromCache(year)
         .getMonthFromCache(month);
-    $: days = displayedMonth.days;
+    $: displayedWeek = yearCalculator
+        .getYearFromCache(year)
+        .getMonthFromCache(month)
+        .getWeekFromCache(customWeekNumber);
+    $: daysInMonth = displayedMonth.days;
+    $: daysInWeek = displayedWeek.days;
+    $: days = useCustomWeeks ? daysInWeek : daysInMonth;
 
     $: previousMonth = $ephemeral.getPreviousMonth(month, year);
     $: nextMonth = $ephemeral.getNextMonth(month, year);
@@ -31,7 +38,7 @@
                 day: { ...day, number: get(previousMonth.days) + day.number },
                 adjacent: true,
             };
-        if (day.number > $days) {
+        if (day.number > $daysInMonth) {
             return {
                 month: nextMonth,
                 day: { ...day, number: day.number - $days },
@@ -48,12 +55,20 @@
 </script>
 
 <div class="week calendarium">
-    {#if $displayWeeks}
+    {#if useCustomWeeks && $displayWeeks}
+        <span class="week-number">{displayedWeek.name}</span>
+    {:else if useCustomWeeks}
+        <span class="week-number">{displayedWeek.abbreviation}</span>
+    {:else if $displayWeeks}
         <span class="week-number">{weekNumber}</span>
     {/if}
     {#each dayArray as day}
         {#if day}
-            <Day {...getMonth(day)} />
+            {#if useCustomWeeks}
+                <Day {...getMonth(day)} week={displayedWeek}/>
+            {:else}
+                <Day {...getMonth(day)} />
+            {/if}
         {:else}
             <div />
         {/if}

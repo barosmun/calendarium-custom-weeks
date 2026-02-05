@@ -22,7 +22,6 @@
     $: store = $global;
     $: displaying = $ephemeral.displaying;
     $: displayWeeks = $ephemeral.displayWeeks;
-    $: displayDayNames = $ephemeral.displayDayNames;
     $: displayedMonth = $ephemeral.displayingMonth;
     $: currentLocationName = $ephemeral.currentLocationName;
     $: location = $ephemeral.location;
@@ -31,6 +30,8 @@
     $: firstWeekNumber = $displayedMonth.firstWeekNumber;
     $: weekdays = $displayedMonth.weekdays;
     $: weeks = $displayedMonth.weeks;
+    $: customWeeks = $displayedMonth.customWeeks;
+    $: useCustomWeeks = $displayedMonth.useCustomWeeks;
     $: viewState = $ephemeral.viewState;
     $: ephemeralStore = $ephemeral.ephemeralStore;
     $: ephemeralStore.subscribe(() => plugin.app.workspace.requestSaveLayout());
@@ -92,13 +93,20 @@
         ) +
         $firstWeekNumber +
         1;
+    $: weekCustom = $useCustomWeeks && $customWeeks?.length ?
+        $customWeeks[weekNumber % $customWeeks.length]
+        : null;
+     $: weekName = $useCustomWeeks && weekCustom ? weekCustom.name : null;
+     $: weekAbbreviation = $useCustomWeeks && weekCustom ? (weekCustom.abbreviation ?? weekName?.substring(0,3).toUpperCase()) : null;
+
+
 </script>
 
 {#key $store}
     <div
         class="calendar-container"
         style="--calendar-columns: {$weekdays.length +
-            ($displayWeeks ? 1 : 0)};--calendar-row-size: {$full
+            ($displayWeeks || useCustomWeeks ? 1 : 0)};--calendar-row-size: {$full
             ? `${(1 / $weeks) * 100}%`
             : '1fr'}; --calendar-row-count: {$weeks}"
     >

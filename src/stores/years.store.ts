@@ -145,7 +145,5 @@ export class YearStore {
         }
         return monthStore;
     }
-    getWeekFromCache(week: number) {
-        return this.weeks;
-    }
+
 }
