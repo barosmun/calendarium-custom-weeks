@@ -122,6 +122,13 @@ export function invalidDayLabel(date: CalDate, calendar: Calendar) {
         return "Day does not exist in selected month";
 }
 
+export function invalidWeekLabel(week: number | null | undefined, calendar: Calendar) {
+    if (week == null || week == undefined) return "No week specified";
+    if (!calendar?.static?.weeks?.length) return "No weeks exist";
+    if (week < 1 || week > calendar?.static?.weeks?.length)
+        return "Selected week does not exist";
+}
+
 export function invalidMonthLabel(month: number, calendar: Calendar) {
     if (month == null) return "No month specified";
     if (!calendar?.static?.months?.length) return "No months exist";

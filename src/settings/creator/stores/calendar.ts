@@ -10,6 +10,7 @@ import {
     compare,
     getEffectiveYearLength,
     isValidDay,
+    isValidWeek,
     isValidMonth,
     isValidYear,
     nanoid,
@@ -159,6 +160,12 @@ function createCreatorStore(plugin: Calendarium, existing: Calendar) {
 
     const eventStore = derived(store, (data) => data.events);
     const categoryStore = derived(store, (data) => data.categories);
+    const validWeeks = derived(staticStore, (data) => {
+        return (
+            data.weeks && data.weeks.length> 0 &&
+            data.weeks?.every((w) => (w.name?.length ?? 0) > 0)
+        );
+    });
     const validMonths = derived(staticStore, (data) => {
         return (
             data.months?.length > 0 &&
@@ -186,6 +193,9 @@ function createCreatorStore(plugin: Calendarium, existing: Calendar) {
 
     const validDay = derived([store, currentStore], ([calendar, current]) => {
         return isValidDay(current, calendar);
+    });
+    const validWeek = derived([store, currentStore], ([calendar, current]) => {
+        return isValidWeek(current.week, calendar);
     });
     const validMonth = derived([store, currentStore], ([calendar, current]) => {
         return isValidMonth(current.month, calendar);
@@ -227,6 +237,8 @@ function createCreatorStore(plugin: Calendarium, existing: Calendar) {
         validDay,
         validMonth,
         validMonths,
+        validWeek,
+        validWeeks,
         validWeekdays,
         validYear,
         validYears,

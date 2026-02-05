@@ -4,6 +4,7 @@ import type {
     Month,
     Era,
     Week,
+    NamedWeek,
 } from "../schemas/calendar/timespans";
 import type {
     Calendar,
@@ -260,6 +261,10 @@ function format(
         .replace(/[Mm]{3,}/g, "🂣") // MMM
         .replace(/[Mm]{2,}/g, "🂤") // MM
         .replace(/[Mm]/g, "🂥") // M
+        .replace(/[Ww]{4,}/g, "🂨") // WWWW
+        .replace(/[Ww]{3,}/g, "🂩") // WWW
+        .replace(/[Ww]{2,}/g, "🂪") // WW
+        .replace(/[Ww]/g, "🂫") // W
         .replace(/[Dd]{2,}/g, "🂦")
         .replace(/[Dd]/g, "🂧");
 
@@ -292,12 +297,21 @@ function format(
         }
     }
 
-    return format
+    format = format
         .replace("🂡", `${year}`)
         .replace("🂢", toMonthString(date.month, calendar)) // MMMM
         .replace("🂣", toShortMonthString(date.month, calendar)) // MMM
         .replace("🂤", toPaddedString(date.month + 1, calendar, "month")) // to human index (intercalary?)
-        .replace("🂥", `${date.month + 1}`) // M
+        .replace("🂥", `${date.month + 1}`); // M
+
+    if(date.week){
+        format = format
+        .replace("🂨", toWeekString(date.week, calendar)) // WWWW
+        .replace("🂩", toShortWeekString(date.week, calendar)) // WWW
+        .replace("🂪", toShortWeekString(date.week, calendar)) // WW
+        .replace("🂫", `${date.week + 1}`) // W
+    }
+    return format
         .replace("🂦", toPaddedString(date.day, calendar, "day"))
         .replace("🂧", `${date.day}`)
         .trim();
@@ -305,6 +319,25 @@ function format(
 
 function shorten(short: string, name: string) {
     return short ? short : name.slice(0, 3);
+}
+
+export function toWeekString(
+    week: Nullable<number>,
+    calendar: Calendar
+): string {
+    return (week == null || !calendar.static.weeks) ? "*" : calendar.static.weeks[week]?.name ?? "*";
+}
+
+export function toShortWeekString(
+    week: Nullable<number>,
+    calendar: Calendar
+): string {
+    return (week == null || !calendar.static.weeks)
+        ? "*"
+        : shorten(
+              calendar.static.weeks[week].abbreviation ?? "",
+              calendar.static.weeks[week].name ?? ""
+          );
 }
 
 export function toMonthString(
@@ -348,6 +381,13 @@ export function isValidDay(date: CalDate, calendar: Calendar) {
         !calendar?.static?.months[month]?.length
     )
         return false;
+    return true;
+}
+
+export function isValidWeek(week: number | null | undefined, calendar: Calendar) {
+    if (week == null || week == undefined) return false;
+    if (!calendar?.static?.weeks?.length) return false;
+    if (week < 0 || week >= calendar?.static?.weeks?.length) return false;
     return true;
 }
 
@@ -542,6 +582,7 @@ export function leapDaysBeforeYear(original: number, leapDays: LeapDay[]) {
 export function getFirstDayOfYear(
     year: number,
     months: Month[],
+    // weeks: NamedWeek[],
     weekdays: Week,
     leapDays: LeapDay[],
     overflow: boolean,

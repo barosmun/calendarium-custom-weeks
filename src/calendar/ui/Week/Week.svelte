@@ -2,11 +2,12 @@
     import { getTypedContext } from "src/calendar/view.utils";
     import Day from "../Day/Day.svelte";
     import { get } from "svelte/store";
-    import type { DayOrLeapDay } from "src/schemas/calendar/timespans";
+    import type { DayOrLeapDay, NamedWeek } from "src/schemas/calendar/timespans";
 
     export let year: number;
     export let month: number;
     export let dayArray: (DayOrLeapDay | null)[];
+    export let week: NamedWeek | null | undefined;
     export let weekNumber: number;
 
     const global = getTypedContext("store");
@@ -43,6 +44,7 @@
             adjacent: false,
         };
     };
+    
 </script>
 
 <div class="week calendarium">

@@ -3,11 +3,12 @@
     import {
         invalidDayLabel,
         invalidMonthLabel,
+        invalidWeekLabel,
         invalidYearLabel,
     } from "../Utilities/utils";
     import type { CalDate } from "src/schemas";
     import { derived, type Readable, type Writable } from "svelte/store";
-    import { isValidDay, isValidMonth, isValidYear } from "src/utils/functions";
+    import { isValidDay, isValidWeek, isValidMonth, isValidYear } from "src/utils/functions";
     import { createEventDispatcher } from "svelte";
     import type { CreatorStore } from "../stores/calendar";
 
@@ -17,9 +18,12 @@
     export let store: CreatorStore | null = null;
 
     const calendar = store ?? getContext("store");
-    const { monthStore, yearStore } = calendar;
+    const { namedWeekStore, monthStore, yearStore } = calendar;
     const validDay = derived([calendar, date], ([calendar, date]) => {
         return isValidDay(date, calendar);
+    });
+    const validWeek = derived([calendar, date], ([calendar, date]) => {
+        return isValidWeek(date.week, calendar);
     });
     const validMonth = derived([calendar, date], ([calendar, date]) => {
         return isValidMonth(date.month, calendar);
@@ -62,6 +66,29 @@
             {/if}
         </div>
     </div>
+    {#if $calendar.static.useCustomWeeks && $namedWeekStore}
+        <div class="calendarium-date-field">
+            <label for="">Week</label>
+            <div class="warning-container">
+                <select
+                    class="dropdown"
+                    bind:value={$date.week}
+                    class:invalid={!$validWeek}
+                >
+                    {#each $namedWeekStore.filter((w) => w.name) as week, index}
+                        <option value={index}>{week.name}</option>
+                    {/each}
+                </select>
+                {#if !$validWeek}
+                    <div class="setting-item-description">
+                        {#if !$validWeek}
+                            {invalidWeekLabel($date.week, $calendar)}
+                        {/if}
+                    </div>
+                {/if}
+        </div>
+        </div>
+    {/if}
     <div class="calendarium-date-field">
         <label for="">Month</label>
         <div class="warning-container">
