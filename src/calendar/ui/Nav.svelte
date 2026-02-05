@@ -13,7 +13,7 @@
     const plugin = getTypedContext("plugin");
     const store = $global;
 
-    const { displaying, displayingMonth, displayingYear, hideEra } = $ephemeral;
+    const { displaying, displayingMonth, displayingWeek, displayingYear, hideEra } = $ephemeral;
     const { currentDisplay, yearCalculator } = store;
     const monthInFrame = getTypedContext("monthInFrame");
     const viewState = $ephemeral.viewState;
@@ -24,6 +24,7 @@
 
     $: displayMoons = $ephemeral.displayMoons;
     $: displayWeeks = $ephemeral.displayWeeks;
+    $: displayDayNames = $ephemeral.displayDayNames;
     $: displayDayNumber = $ephemeral.displayDayNumber;
     $: displayAbsoluteYear = $ephemeral.displayAbsoluteYear;
     $: displaySeasonColors = $ephemeral.displaySeasonColors;
@@ -86,6 +87,12 @@
                 $displayWeeks = !$displayWeeks;
             });
             item.setChecked($displayWeeks);
+        });
+        menu.addItem((item) => {
+            item.setTitle(`Show day names`).onClick(async () => {
+                $displayDayNames = !$displayDayNames;
+            });
+            item.setChecked($displayDayNames);
         });
         menu.addItem((item) => {
             item.setTitle("Show day number")
@@ -179,6 +186,11 @@
                 {#if $viewState != ViewState.Year}
                     <span class="calendarium-month month"
                         >{$displayingMonth.name}</span
+                    >
+                {/if}
+                {#if $viewState == ViewState.Week && $displayingWeek}
+                    <span class="calendarium-month month"
+                        >{$displayingWeek.name}</span
                     >
                 {/if}
                 <span class="calendarium-year year">{$displayedYear}</span>

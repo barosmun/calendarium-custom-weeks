@@ -196,6 +196,7 @@ export interface EphemeralState {
     viewState: ViewState;
     displayMoons: boolean;
     displayWeeks: boolean;
+    displayDayNames: boolean;
     displayDayNumber: boolean;
     displaySeasonColors: boolean;
     displayWeather: boolean;
@@ -219,6 +220,7 @@ export function getEphemeralStore(
     const displayMoons = writable(base.static.displayMoons);
     const displayDayNumber = writable(base.static.displayDayNumber);
     const displayWeeks = writable(base.displayWeeks);
+    const displayDayNames = writable(base.displayDayNames);
     const hideEra = writable(base.hideEra);
     const displayAbsoluteYear = writable(base.displayAbsoluteYear);
     const viewState = writable<ViewState>(ViewState.Month);
@@ -248,6 +250,7 @@ export function getEphemeralStore(
             displayDayNumber,
             displayMoons,
             displayWeeks,
+            displayDayNames,
             hideEra,
             displayAbsoluteYear,
             displaying,
@@ -262,6 +265,7 @@ export function getEphemeralStore(
             displayDayNumber,
             displayMoons,
             displayWeeks,
+            displayDayNames,
             hideEra,
             displayAbsoluteYear,
             displaying,
@@ -276,6 +280,7 @@ export function getEphemeralStore(
                 displayDayNumber,
                 displayMoons,
                 displayWeeks,
+                displayDayNames,
                 hideEra,
                 displayAbsoluteYear,
                 displaySeasonColors,
@@ -295,6 +300,7 @@ export function getEphemeralStore(
             displayDayNumber.set(state.displayDayNumber);
             displayMoons.set(state.displayMoons);
             displayWeeks.set(state.displayWeeks);
+            displayDayNames.set(state.displayDayNames);
             hideEra.set(state.hideEra);
             displayAbsoluteYear.set(state.displayAbsoluteYear);
             interpolateColors.set(state.interpolateColors);
@@ -326,6 +332,7 @@ export function getEphemeralStore(
                 displayAbsoluteYear: get(displayAbsoluteYear),
                 displayMoons: get(displayMoons),
                 displayWeeks: get(displayWeeks),
+                displayDayNames: get(displayDayNames),
                 displayWeather: get(displayWeather),
                 location: get(location),
             };
@@ -333,6 +340,7 @@ export function getEphemeralStore(
         displayMoons,
         displayDayNumber,
         displayWeeks,
+        displayDayNames,
         hideEra,
         displayAbsoluteYear,
         displaySeasonColors,
@@ -356,6 +364,9 @@ export function getEphemeralStore(
             ([display, calendar]) => {
                 return dateString(display, calendar);
             }
+        ),
+        displayingWeek: derived([displaying], ([date]) =>
+            date.week
         ),
         displayingMonth: derived([displaying], ([date]) =>
             yearCalculator

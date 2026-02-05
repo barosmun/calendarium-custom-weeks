@@ -50,6 +50,9 @@ export class YearStore {
         }
         return list;
     });
+    weeks = derived([this.staticStore.weeks], ([weeks]) => {
+        return weeks;
+    });
     months = derived([this.staticStore.months, this.eras], ([months, eras]) => {
         let end = eras.find(
             (era) => era.endsYear && era.date.year === this.year
@@ -141,5 +144,8 @@ export class YearStore {
             this.monthCache.set(month, monthStore);
         }
         return monthStore;
+    }
+    getWeekFromCache(week: number) {
+        return this.weeks;
     }
 }

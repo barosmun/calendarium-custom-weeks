@@ -60,6 +60,7 @@ type BaseCalendar = {
     categories: CalEventCategory[];
     date?: number;
     displayWeeks?: boolean;
+    displayDayNames?: boolean;
     hideEra?: boolean;
     displayAbsoluteYear?: boolean;
     path: string[];

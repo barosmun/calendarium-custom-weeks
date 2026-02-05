@@ -304,7 +304,7 @@ function format(
         .replace("🂤", toPaddedString(date.month + 1, calendar, "month")) // to human index (intercalary?)
         .replace("🂥", `${date.month + 1}`); // M
 
-    if(date.week){
+    if(date.week || date.week == 0){
         format = format
         .replace("🂨", toWeekString(date.week, calendar)) // WWWW
         .replace("🂩", toShortWeekString(date.week, calendar)) // WWW

@@ -7,7 +7,7 @@
     export let year: number;
     export let month: number;
     export let dayArray: (DayOrLeapDay | null)[];
-    export let week: NamedWeek | null | undefined;
+    // export let week: NamedWeek | null | undefined;
     export let weekNumber: number;
 
     const global = getTypedContext("store");

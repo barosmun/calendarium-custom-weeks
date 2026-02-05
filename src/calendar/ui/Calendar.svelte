@@ -22,6 +22,7 @@
     $: store = $global;
     $: displaying = $ephemeral.displaying;
     $: displayWeeks = $ephemeral.displayWeeks;
+    $: displayDayNames = $ephemeral.displayDayNames;
     $: displayedMonth = $ephemeral.displayingMonth;
     $: currentLocationName = $ephemeral.currentLocationName;
     $: location = $ephemeral.location;

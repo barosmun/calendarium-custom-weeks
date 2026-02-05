@@ -8,6 +8,7 @@
     const global = getTypedContext("store");
     const ephemeral = getTypedContext("ephemeralStore");
     $: displayWeeks = $ephemeral.displayWeeks;
+    $: displayDayNames = $ephemeral.displayDayNames;
 
     $: store = $global;
     $: yearCalculator = store.yearCalculator;
@@ -23,11 +24,13 @@
             <span>W</span>
         </div>
     {/if}
-    {#each $weekdays as day}
-        <div class="weekday calendarium">
-            {getAbbreviation(day)}
-        </div>
-    {/each}
+    {#if $displayDayNames}
+        {#each $weekdays as day}
+            <div class="weekday calendarium">
+                {getAbbreviation(day)}
+            </div>
+        {/each}
+    {/if}
 </div>
 
 <style scoped>
