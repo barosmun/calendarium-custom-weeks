@@ -30,6 +30,10 @@
     $: displayedMonth = yearCalculator
         .getYearFromCache($viewing!.year)
         .getMonthFromCache($viewing!.month);
+    $: displayedWeek = yearCalculator
+        .getYearFromCache($viewing!.year)
+        .getMonthFromCache($viewing!.month)
+        .getWeekFromCache($viewing!.week ?? 0);
     $: daysBeforeMonth = displayedMonth.daysBefore;
     $: daysBeforeDay = $daysBeforeMonth + $viewing!.day;
     $: events = $store.getEventsForDate($viewing!);

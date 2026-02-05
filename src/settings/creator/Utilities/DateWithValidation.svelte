@@ -35,9 +35,9 @@
     const dispatch = createEventDispatcher<{ valid: boolean; date: CalDate }>();
 
     const isValid = derived(
-        [validDay, validMonth, validYear],
-        ([day, month, year]) => {
-            return day && month && year;
+        [validDay, validWeek, validMonth, validYear],
+        ([day, week, month, year]) => {
+            return day && week && month && year;
         },
     );
     isValid.subscribe((v) => {

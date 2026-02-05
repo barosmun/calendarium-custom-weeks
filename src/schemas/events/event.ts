@@ -28,12 +28,14 @@ export type CalEventSort = {
 export type OneTimeCalEventDate = {
     year: number;
     month: number;
+    week?: number;
     day: number;
 };
 
 export type RecurringCalEventDate = {
     year: FullCalEventDateBit;
     month: FullCalEventDateBit;
+    week?: FullCalEventDateBit;
     day: FullCalEventDateBit;
 };
 

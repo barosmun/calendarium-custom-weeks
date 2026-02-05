@@ -1,5 +1,5 @@
 import type { CalDate, Calendar } from "src/@types";
-import { isValidDay, isValidMonth, isValidYear } from "src/utils/functions";
+import { isValidDay, isValidMonth, isValidWeek, isValidYear } from "src/utils/functions";
 import { get } from "svelte/store";
 
 export function getMissingNotice(calendar: Calendar) {
@@ -12,6 +12,7 @@ export function getMissingNotice(calendar: Calendar) {
     if (
         !isValidDay(calendar.current, calendar) ||
         !isValidMonth(calendar.current.month, calendar) ||
+        !isValidWeek(calendar.current.week, calendar) ||
         !isValidYear(calendar.current.year, calendar)
     ) {
         missingArr.push("Specified current date is not valid.");

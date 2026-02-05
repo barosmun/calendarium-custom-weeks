@@ -180,8 +180,8 @@ export function dateString(
         // default calendar format is DEFAULT_FORMAT (YYYY-MM-DD).. should this be flipped?
         dateFormat = calendar.dateFormat || DEFAULT_FORMAT;
     }
-    const { day, month, year } = date;
-    const { months, years, useCustomYears } = calendar.static;
+    const { day, week, month, year } = date;
+    const { weeks, months, years, useCustomYears, useCustomWeeks } = calendar.static;
     let startY: string = `${year}`;
     if (useCustomYears && years?.length && year) {
         if (year < 0 || year >= years.length)
@@ -189,6 +189,7 @@ export function dateString(
         startY = years[year - 1]?.name ?? startY;
     }
     if (month != undefined && !months[month]) return "Invalid date";
+    if (useCustomWeeks && week != undefined && weeks != undefined && !weeks[week]) return "Invalid date";
 
     const startM = month == undefined ? undefined : months[month].name;
     const startD = ordinal(day);
@@ -387,6 +388,7 @@ export function isValidDay(date: CalDate, calendar: Calendar) {
 }
 
 export function isValidWeek(week: number | null | undefined, calendar: Calendar) {
+    if(!calendar.static.useCustomWeeks) return true;
     if (week == null || week == undefined) return false;
     if (!calendar?.static?.weeks?.length) return false;
     if (week < 0 || week >= calendar?.static?.weeks?.length) return false;
