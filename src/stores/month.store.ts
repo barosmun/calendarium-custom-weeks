@@ -120,15 +120,6 @@ export class MonthStore {
      *
      * To "skip" days in the UI, null should be used.
      */
-
-    customWeeks = derived([this.staticStore.weeks], ([weeks]) => {
-        return weeks;
-    });
-
-    useCustomWeeks = derived([this.staticStore.staticConfiguration], (useCustomWeeks) => {
-        return useCustomWeeks;
-    });
-
     daysAsWeeks: Readable<Array<(DayOrLeapDay | null)[]>> = derived(
         [
             this.weekdays,
@@ -257,7 +248,6 @@ export class MonthStore {
             return weekArray;
         }
     );
-    
     weeks = derived([this.daysAsWeeks], ([weeks]) => {
         return weeks.length;
     });

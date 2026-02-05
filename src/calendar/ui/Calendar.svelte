@@ -30,8 +30,6 @@
     $: firstWeekNumber = $displayedMonth.firstWeekNumber;
     $: weekdays = $displayedMonth.weekdays;
     $: weeks = $displayedMonth.weeks;
-    $: customWeeks = $displayedMonth.customWeeks;
-    $: useCustomWeeks = $displayedMonth.useCustomWeeks;
     $: viewState = $ephemeral.viewState;
     $: ephemeralStore = $ephemeral.ephemeralStore;
     $: ephemeralStore.subscribe(() => plugin.app.workspace.requestSaveLayout());
@@ -93,13 +91,6 @@
         ) +
         $firstWeekNumber +
         1;
-    $: weekCustom = $useCustomWeeks && $customWeeks?.length ?
-        $customWeeks[weekNumber % $customWeeks.length]
-        : null;
-     $: weekName = $useCustomWeeks && weekCustom ? weekCustom.name : null;
-     $: weekAbbreviation = $useCustomWeeks && weekCustom ? (weekCustom.abbreviation ?? weekName?.substring(0,3).toUpperCase()) : null;
-
-
 </script>
 
 {#key $store}
@@ -139,8 +130,6 @@
                     month={$displaying.month}
                     dayArray={weekForDay}
                     {weekNumber}
-                    {weekName}
-                    {weekAbbreviation}
                 />
             {/if}
         </div>

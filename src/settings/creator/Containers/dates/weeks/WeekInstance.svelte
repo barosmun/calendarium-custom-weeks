@@ -15,7 +15,7 @@
     <div slot="name">{item.name}</div>
     <div slot="desc" class="desc">
         <div use:setNodeIcon={icon} aria-label={label} />
-        <span> {item.abbreviation} </span>
+        <span> {item.abbreviation ?? item.name?.substring(0,3).toUpperCase()} </span>
     </div>
 </SettingItem>
 
