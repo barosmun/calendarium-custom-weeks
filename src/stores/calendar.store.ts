@@ -369,7 +369,7 @@ export function getEphemeralStore(
             yearCalculator
                 .getYearFromCache(date.year)
                 .getMonthFromCache(date.month)
-                .getWeekFromCache((date.day - 1)/weekdays.length)
+                .getWeekFromCache(Math.floor((date.day - 1)/weekdays.length))
         ),
         displayingMonth: derived([displaying], ([date]) =>
             yearCalculator
