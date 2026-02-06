@@ -78,13 +78,13 @@
         !adjacent &&
         $current.day == day.number &&
         $current.month == $index &&
-        $current.week == $windex &&
+        // $current.week == $windex &&
         $current.year == year.year;
     $: opened =
         !adjacent &&
         $viewing &&
         $viewing.day == day.number &&
-        $viewing.week == $windex &&
+        // $viewing.week == $windex &&
         $viewing.month == $index &&
         $viewing.year == year.year;
 

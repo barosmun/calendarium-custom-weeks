@@ -181,7 +181,7 @@ export function dateString(
         dateFormat = calendar.dateFormat || DEFAULT_FORMAT;
     }
     const { day, week, month, year } = date;
-    const { weeks, months, years, useCustomYears, useCustomWeeks } = calendar.static;
+    const { weeks, weekdays, months, years, useCustomYears, useCustomWeeks } = calendar.static;
     let startY: string = `${year}`;
     if (useCustomYears && years?.length && year) {
         if (year < 0 || year >= years.length)
@@ -189,7 +189,6 @@ export function dateString(
         startY = years[year - 1]?.name ?? startY;
     }
     if (month != undefined && !months[month]) return "Invalid date";
-    if (useCustomWeeks && week != undefined && weeks != undefined && !weeks[week]) return "Invalid date";
 
     const startM = month == undefined ? undefined : months[month].name;
     const startD = ordinal(day);
@@ -242,7 +241,12 @@ export function dateString(
     }
 
     if (month != undefined && year != undefined) {
-        return format(calendar, dateFormat, startY, date as CalDate);
+        let d : CalDate = {day: date.day, week: date.week, month: date.month, year: date.year};
+        if (useCustomWeeks && date.day > weekdays.length){
+            d.week = Math.floor((day-1) / weekdays.length);
+            d.day = (day-1)%weekdays.length+1;
+        }
+        return format(calendar, dateFormat, startY, d as CalDate);
     }
     if (month != undefined) {
         return `${startM} ${startD} of every year`;
@@ -376,14 +380,14 @@ export function isValidDay(date: CalDate, calendar: Calendar) {
         !calendar?.static?.months[month]?.length
     )
         return false;
-    if (
-        week != undefined && 
-        (
-            day > calendar?.static?.weekdays?.length ||
-            day + (week * calendar?.static?.weekdays?.length) > calendar?.static?.months[month]?.length
-        )
-    )
-        return false;
+    // if (
+    //     week != undefined && 
+    //     (
+    //         day > calendar?.static?.weekdays?.length ||
+    //         day + (week * calendar?.static?.weekdays?.length) > calendar?.static?.months[month]?.length
+    //     )
+    // )
+    //     return false;
     return true;
 }
 

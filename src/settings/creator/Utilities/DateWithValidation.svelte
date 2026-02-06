@@ -35,9 +35,9 @@
     const dispatch = createEventDispatcher<{ valid: boolean; date: CalDate }>();
 
     const isValid = derived(
-        [validDay, validWeek, validMonth, validYear],
-        ([day, week, month, year]) => {
-            return day && week && month && year;
+        [validDay, validMonth, validYear],
+        ([day, month, year]) => {
+            return day && month && year;
         },
     );
     isValid.subscribe((v) => {
@@ -45,10 +45,10 @@
     });
     date.subscribe((date) => dispatch("date", date));
 
-    if(!$date.week && $calendar.static.useCustomWeeks){
-        $date.week = Math.floor($date.day / $calendar.static.weekdays.length);
-        $date.day %= $calendar.static.weekdays.length;
-    }
+    // if(!$date.week && $calendar.static.useCustomWeeks){
+    //     $date.week = Math.floor(($date.day-1) / $calendar.static.weekdays.length);
+    //     $date.day = ($date.day-1)%$calendar.static.weekdays.length+1;
+    // }
 </script>
 
 <div class="setting-item calendarium-date-field-container">
@@ -71,7 +71,7 @@
             {/if}
         </div>
     </div>
-    {#if $calendar.static.useCustomWeeks && $namedWeekStore}
+    <!-- {#if $calendar.static.useCustomWeeks && $namedWeekStore}
         <div class="calendarium-date-field">
             <label for="">Week</label>
             <div class="warning-container">
@@ -93,7 +93,7 @@
                 {/if}
         </div>
         </div>
-    {/if}
+    {/if} -->
     <div class="calendarium-date-field">
         <label for="">Month</label>
         <div class="warning-container">

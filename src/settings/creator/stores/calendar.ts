@@ -204,9 +204,9 @@ function createCreatorStore(plugin: Calendarium, existing: Calendar) {
         return isValidYear(current.year, calendar);
     });
     const validDate = derived(
-        [validDay, validWeek, validMonth, validYear],
-        ([day, week, month, year]) => {
-            return day && week && month && year;
+        [validDay, validMonth, validYear],
+        ([day, month, year]) => {
+            return day && month && year;
         }
     );
     const validCalendar = derived(
