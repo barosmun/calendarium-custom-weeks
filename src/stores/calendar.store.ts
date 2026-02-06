@@ -365,11 +365,11 @@ export function getEphemeralStore(
                 return dateString(display, calendar);
             }
         ),
-        displayingWeek: derived([displaying], ([date]) =>
+        displayingWeek: derived([displaying, staticStore.weekdays], ([date, weekdays]) =>
             yearCalculator
                 .getYearFromCache(date.year)
                 .getMonthFromCache(date.month)
-                .getWeekFromCache(date.week ?? 0)
+                .getWeekFromCache((date.day - 1)/weekdays.length)
         ),
         displayingMonth: derived([displaying], ([date]) =>
             yearCalculator

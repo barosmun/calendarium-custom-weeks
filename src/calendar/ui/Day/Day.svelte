@@ -18,6 +18,7 @@
     import { readable } from "svelte/store";
     import MoonContainer from "../Moons/MoonContainer.svelte";
     import { WeekStore } from "src/stores/week.store";
+    import { WeekModal } from "src/settings/creator/Containers/dates/weeks/week";
 
     export let month: MonthStore;
     export let week: WeekStore | undefined = undefined;
@@ -88,6 +89,7 @@
         $viewing.year == year.year;
 
     $: number = `${day.number}`;
+    $: displayNumber = `${$config.useCustomWeeks ? day.number-(($windex??0)*$calendar.static.weekdays.length) : day.number}`;
     $: {
         if ($config.dayDisplayCallback) {
             try {
@@ -121,6 +123,7 @@
                 item.setTitle("Open day view").onClick(() => {
                     $viewing = {
                         day: day.number,
+                        week: $windex,
                         month: $index,
                         year: year.year,
                     };
@@ -131,6 +134,7 @@
             item.setTitle("Set as Today").onClick(async () => {
                 $store.setCurrentDate({
                     day: day.number,
+                    week: $windex,
                     month: $index,
                     year: year.year,
                 });
@@ -140,6 +144,7 @@
             item.setTitle("New event").onClick(() => {
                 addEventWithModal(plugin, $calendar, {
                     day: day.number,
+                    week: $windex,
                     month: $index,
                     year: year.year,
                 });
@@ -169,7 +174,7 @@
     };
 
     const handleClick = () => {
-        $viewing = { day: day.number, month: $index, year: year.year };
+        $viewing = { day: day.number, week: $windex, month: $index, year: year.year };
         openAgendaView(view);
     };
 </script>
@@ -204,7 +209,7 @@
                 {/if}
                 {#if day.type === TimeSpanType.Day || day.numbered}
                     <span class="day-number">
-                        {number}
+                        {displayNumber}
                     </span>
                 {/if}
                 {#if $full && $weather && $displayWeather}

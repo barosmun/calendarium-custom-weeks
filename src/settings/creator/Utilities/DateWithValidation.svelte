@@ -44,6 +44,11 @@
         dispatch("valid", v);
     });
     date.subscribe((date) => dispatch("date", date));
+
+    if(!$date.week && $calendar.static.useCustomWeeks){
+        $date.week = Math.floor($date.day / $calendar.static.weekdays.length);
+        $date.day %= $calendar.static.weekdays.length;
+    }
 </script>
 
 <div class="setting-item calendarium-date-field-container">
