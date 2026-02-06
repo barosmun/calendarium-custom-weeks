@@ -1,3 +1,15 @@
+## About This Fork
+For my purposes I needed named weeks, or a kind of "sub-month", for my dates.
+
+Days that are displayed like this: 
+- 6-FirstWeek-February-2026
+- 4-Trident-Last Seed-1066
+
+All changes are based quite greedily by own needs - but I'm happy for anyone to strip it for parts.
+
+**Beware:** This fork is riddled with errors and bombs and dynamite, I kinda measured once and cut twice on this.
+
+\- barosmun
 # Calendarium
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
